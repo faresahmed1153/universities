@@ -35,7 +35,7 @@ export default function Reset() {
       setIsLoading(true);
       setError("");
       setErrorList([]);
-      const { data } = await axios.post("https://evening-ridge-26494.herokuapp.com/reset", user);
+      const { data } = await axios.post("http://evening-ridge-26494.herokuapp.com/reset", user);
       console.log(data);
 
       if (data.message === "Done") {
