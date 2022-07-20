@@ -1,24 +1,72 @@
-import logo from './logo.svg';
-import './App.css';
+import Navbar from "./Components/Navbar";
+import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
+import Home from "./Components/Home";
+import Login from "./Components/Login";
+import Register from "./Components/Register";
+import Notfound from "./Components/NotFound";
+import { useEffect, useState } from "react";
+import jwtDecode from "jwt-decode";
+import Reset from "./Components/Reset";
+import RessetPassword from "./Components/RessetPassword";
 
 function App() {
+  const [user, setUserData] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      getUserData();
+    }
+  }, []);
+
+  function getUserData() {
+    const decodedToken = jwtDecode(localStorage.getItem("token"));
+    setUserData(decodedToken);
+  }
+  function logout() {
+    localStorage.removeItem("token");
+    setUserData(null);
+    navigate("/login");
+  }
+  useEffect(() => {}, [user]);
+  function ProtectedRoute({ children }) {
+    if (!localStorage.getItem("token")) {
+      return <Navigate to="/login" />;
+    } else {
+      return children;
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar user={user} logout={logout} />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="universities"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="login" element={<Login getUserData={getUserData} />} />
+        <Route path="register" element={<Register />} />
+        <Route path="reset" element={<Reset />} />
+        <Route path="reset-password" element={<RessetPassword />}>
+          <Route path=":token" element={<RessetPassword />} />
+        </Route>
+
+        <Route path="*" element={<Notfound />} />
+      </Routes>
+    </>
   );
 }
 
