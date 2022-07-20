@@ -55,7 +55,7 @@ export default function RessetPassword() {
       setIsLoading(true);
       setErrorList([]);
       setError("");
-      const { data } = await axios.patch(`http://localhost:5000/reset-password/${params.token}`, user);
+      const { data } = await axios.patch(`https://evening-ridge-26494.herokuapp.com/reset-password/${params.token}`, user);
       console.log(data);
 
       if (data.message === "Done") {

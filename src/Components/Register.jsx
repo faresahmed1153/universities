@@ -43,7 +43,7 @@ function Register() {
     } else {
       setIsLoading(true);
 
-      const { data } = await axios.post("http://localhost:5000/signup", user);
+      const { data } = await axios.post("https://evening-ridge-26494.herokuapp.com/signup", user);
       console.log(data);
 
       if (data.message === "Done") {
