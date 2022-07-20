@@ -26,7 +26,7 @@ export default function Home() {
       return;
     }
     setIsLoading(true);
-    const { data } = await axios.get("http://localhost:5000/search", {
+    const { data } = await axios.get("https://evening-ridge-26494.herokuapp.com/search", {
       headers: { authorization: `Bearer ${token}` },
       params: { searched: word },
     });
